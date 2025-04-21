@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Extension:   Net Commander                                            *
- *   Version:     0.0.1                                                    *
+ *   Version:     0.0.2                                                    *
  *   Author:      Matia Zanella                                            *
  *   Description: The Swiss‑Army knife for Network Engineers, DevOps       * 
  *                professionals and Architects right inside VS Code.       *

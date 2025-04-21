@@ -2,17 +2,41 @@
   "name": "net-commander",
   "displayName": "Net Commander ",
   "description": "Net Commander is aimed to be a powerful all-in-one toolkit for Network Engineers, DevOps professionals or Architects.",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "extensionKind": ["workspace", "ui"],
   "publisher": "akamura",
+  "pricing": "Free",
+  "category":"Formatters, Others",
   "icon": "resources/icons/net-commander-icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/akamura/net-commander"
   },
+  "bugs": {
+    "url": "https://github.com/akamura/net-commander/issues"
+  },
+  "sponsor": {
+  "url": "https://github.com/sponsors/akamura"
+  },
   "engines": {
     "vscode": "^1.99.0"
   },
-  "categories": ["Other"],
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "networking",
+    "ipinfo",
+    "ip",
+    "rfc",
+    "ssh",
+    "terminal",
+    "iana",
+    "peeringdb",
+    "traceroute",
+    "ping",
+    "colorizer"
+  ],
   "activationEvents": [
     "onStartupFinished",
     "onCommand:sshConnect.connect",
@@ -23,13 +47,6 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "languages": [
-      {
-        "id": "plaintext",
-        "aliases": ["Text"],
-        "extensions": [".txt"]
-      }
-    ],
     "commands": [
       { "command": "sshConnect.connect", "title": "NET Commander: SSH Connect" },
       { "command": "net-commander.cidrcalc", "title": "NET Commander: CIDR Calculator" },
