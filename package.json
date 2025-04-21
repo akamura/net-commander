@@ -1,0 +1,110 @@
+{
+  "name": "net-commander",
+  "displayName": "Net Commander ",
+  "description": "Net Commander is aimed to be a powerful all-in-one toolkit for Network Engineers, DevOps professionals or Architects.",
+  "version": "0.0.1",
+  "icon": "resources/icons/net-commander-icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akamura/net-commander"
+  },
+  "engines": {
+    "vscode": "^1.99.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:sshConnect.connect",
+    "onTerminalProfile:sshConnect.profile",
+    "onLanguage:plaintext",
+    "onCommand:netcmd.copyLastOutput",
+    "onCommand:netcmd.saveLastOutput"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "plaintext",
+        "aliases": ["Text"],
+        "extensions": [".txt"]
+      }
+    ],
+    "commands": [
+      { "command": "sshConnect.connect", "title": "NET Commander: SSH Connect" },
+      { "command": "net-commander.cidrcalc", "title": "NET Commander: CIDR Calculator" },
+      { "command": "net-commander.checkIpInfo", "title": "NET Commander: Public IP lookup - ipinfo.io" },
+      { "command": "net-commander.checkMyIpInfo", "title": "NET Commander: Get my Public IP - ipinfo.io" },
+      { "command": "net-commander.ping", "title": "NET Commander: Ping" },
+      { "command": "net-commander.traceroute", "title": "NET Commander: Traceroute" },
+      { "command": "net-commander.ianaportcalc", "title": "NET Commander: IANA Port Calculator" },
+      { "command": "net-commander.peeringdb", "title": "NET Commander: PeeringDB Lookup" },
+      { "command": "net-commander.topologyviewer", "title": "NET Commander: Topology Viewer" },
+      {
+        "command": "netcmd.copyLastOutput",
+        "title": "Copy Output",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "netcmd.saveLastOutput",
+        "title": "Download Output",
+        "icon": "$(cloud-download)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "netcmd.copyLastOutput",
+          "when": "view == terminal",
+          "group": "navigation"
+        },
+        {
+          "command": "netcmd.saveLastOutput",
+          "when": "view == terminal",
+          "group": "navigation"
+        }
+      ]
+    },
+    "terminal": {
+      "profiles": [
+        { "id": "sshConnect.profile", "title": "SSH: Select Host", "icon": "remote" }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "NET Commander",
+      "properties": {
+        "netCommander.ipinfoApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Open a Free account at ipinfo.io website and get your free API key from your dashboard API Token and paste it here."
+        },
+        "netCommander.ianaCsvUrl": {
+          "type": "string",
+          "default": "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.csv",
+          "description": "This is the precompiled URL for IANA port assignments. Verify the URL at the IANA site and replace here if they update it https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.99.0",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.23.0",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "ssh-config": "^5.0.3"
+  }
+}
