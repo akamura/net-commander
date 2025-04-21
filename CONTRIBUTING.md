@@ -1,4 +1,4 @@
-# Contributing to net‑commander
+# Contributing to Net Commander
 
 First off, I would like to thank you so much for considering the extension helpful and contributing to **net‑commander**! 🎉 Your help makes this project better for everyone.
 
