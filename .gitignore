@@ -47,3 +47,4 @@ npmrc
 coverage/
 test-results/
 tmp/
+/net-commander

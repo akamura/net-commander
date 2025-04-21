@@ -128,11 +128,8 @@ Parse Cisco CDP/LLDP text exports (e.g., `show cdp neighbors detail`) to auto‑
 
 Go to **File > Preferences > Settings** (or <kbd>Ctrl+,</kbd>), search for **Net Commander**, and configure:
 
-- **SSH Profiles Source**: Path to your SSH config file.  
-- **ipinfo.io API Token**: For extended API usage.  
-- **Ping/Traceroute**: Default counts, intervals, and max hops.  
-- **Colorizer**: Toggle syntax highlighting or add custom keywords.  
-- **Topology Output**: File names and auto-open options for diagrams.
+- **IANA csv url**: Edit the IANA database CSV in case it change.
+- **IPinfo.io API Token**: Save your API Token to be used by the extension.
 
 All settings are exposed via the VS Code UI—no manual JSON edits required.
 
