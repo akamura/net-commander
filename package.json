@@ -3,6 +3,7 @@
   "displayName": "Net Commander ",
   "description": "Net Commander is aimed to be a powerful all-in-one toolkit for Network Engineers, DevOps professionals or Architects.",
   "version": "0.0.1",
+  "publisher": "akamura",
   "icon": "resources/icons/net-commander-icon.png",
   "repository": {
     "type": "git",
