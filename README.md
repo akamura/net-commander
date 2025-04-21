@@ -1,5 +1,13 @@
-# Net Commander Network Engineering Toolkit for Visual Studio Code
-![Net‑Commander Logo](https://raw.githubusercontent.com/akamura/net-commander/refs/heads/main/resources/icons/net-commander-full.png)
+![Net Commander Logo](https://raw.githubusercontent.com/akamura/net-commander/refs/heads/main/resources/icons/net-commander-full.png)
+
+<div align="center">
+
+# Network Engineering Toolkit for Visual Studio Code
+**Troubleshoot and manage networks end-to-end without ever leaving your code editor.**
+
+</div>
+<br><br>
+
 ### What is Net Commander
 Net Commander is aimed to be a powerful all-in-one toolkit for Network Engineers, DevOps professionals or Architects. This Visual Studio Code extension integrates a suite of common networking tools directly into VS Code, streamlining your daily workflow.
 <br><br>
