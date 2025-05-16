@@ -7,3 +7,7 @@ All notable changes to the "net-commander" extension will be documented in this 
 ## 2025-05-05 - [0.0.1]
 ### Added
 - Initial release
+
+## 2025-05-05 - [0.0.1]
+### Added
+- Initial release

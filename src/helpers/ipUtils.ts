@@ -1,7 +1,5 @@
 /***************************************************************************
  *   Extension:   Net Commander                                            *
- *   Version:     0.0.1                                                    *
- *   Author:      elelabdev                                                *
  *   Description: Net Commander is the extension for Visual Studio Code    *
  *                dedicated to Network Engineers, DevOps Engineers and     *
  *                Solution Architects streamlining everyday workflows and  * 
