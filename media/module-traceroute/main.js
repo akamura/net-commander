@@ -19,6 +19,14 @@
 
 // media/module-traceroute/main.js
 
+window.addEventListener('error', event => {
+  const msg = (event.message || '').toLowerCase();
+  if (msg.includes('resizeobserver loop completed')) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+});
+
 const d3     = window.d3;
 const vscode = acquireVsCodeApi();
 const NODE_WIDTH = 20;

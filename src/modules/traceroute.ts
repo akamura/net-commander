@@ -41,6 +41,8 @@ export interface TracerouteHop {
 export interface TracerouteNode {
   id: string;
   label: string;
+  ip?: string;
+  hostname?: string;
   x?: number;
   y?: number;
 }
@@ -195,42 +197,85 @@ export class TraceroutePanel {
     const local = getLocalNetworkInfo();
     this.topology.nodes.push({
       id: 'source',
-      label: `My host: ${local.localIP} (${local.macAddress})`
+      label: `My host: ${local.localIP} (${local.macAddress})`,
+      ip: local.localIP,
+      hostname: os.hostname()
     });
     this._panel.webview.postMessage({ command: 'updateTopology', topology: this.topology });
   }
 
   private startTraceroute(target: string) {
-    const cmd = os.platform().startsWith('win') ? 'tracert' : 'traceroute';
+    const cmd  = os.platform().startsWith('win') ? 'tracert' : 'traceroute';
     const args = [target];
     this.activeProcess = spawn(cmd, args);
+    let buf = '';
   
-    let buffer = '';
     this.activeProcess.stdout?.setEncoding('utf8');
-    this.activeProcess.stdout?.on('data', (data: string) => {
-      buffer += data;
-      const lines: string[] = data.split(/\r?\n/);
-      lines.forEach((line: string) => {
+    this.activeProcess.stdout?.on('data', (chunk: string) => {
+      buf += chunk;
+  
+      const lines = buf.split(/\r?\n/);
+      buf = lines.pop() ?? '';
+  
+      for (const line of lines) {
         const hop = this.parseTracerouteLine(line);
-        if (!hop) {
-          return;
-        }
+        if (!hop) continue;
+  
         const nodeId = `hop${hop.hop}`;
-        if (!this.topology.nodes.find(n => n.id === nodeId)) {
-          const label = hop.hostname && hop.hostname !== hop.ip
-            ? `${hop.hostname} (${hop.ip})${hop.rtt ? ' – ' + hop.rtt : ''}`
-            : `${hop.ip}${hop.rtt ? ' – ' + hop.rtt : ''}`;
-          this.topology.nodes.push({ id: nodeId, label });
-          const prev = hop.hop === 1 ? 'source' : `hop${hop.hop - 1}`;
-          this.topology.links.push({ source: prev, target: nodeId });
-          this._panel.webview.postMessage({ command: 'updateTopology', topology: this.topology });
+        if (this.topology.nodes.find(n => n.id === nodeId)) continue;
+  
+        const label = hop.hostname && hop.hostname !== hop.ip
+          ? `${hop.hostname} (${hop.ip})${hop.rtt ? ' – ' + hop.rtt : ''}`
+          : `${hop.ip}${hop.rtt ? ' – ' + hop.rtt : ''}`;
+  
+        this.topology.nodes.push({
+          id: nodeId,
+          label,
+          ip: hop.ip,
+          hostname: hop.hostname
+        });
+  
+        const prev = hop.hop === 1 ? 'source' : `hop${hop.hop - 1}`;
+        this.topology.links.push({ source: prev, target: nodeId });
+  
+        this._panel.webview.postMessage({
+          command: 'updateTopology',
+          topology: this.topology
+        });
+      }
+    });
+  
+    this.activeProcess.stdout?.on('end', () => {
+      if (buf) {
+        const hop = this.parseTracerouteLine(buf);
+        if (hop) {
+          const nodeId = `hop${hop.hop}`;
+          if (!this.topology.nodes.find(n => n.id === nodeId)) {
+            const label = hop.hostname && hop.hostname !== hop.ip
+              ? `${hop.hostname} (${hop.ip})${hop.rtt ? ' – ' + hop.rtt : ''}`
+              : `${hop.ip}${hop.rtt ? ' – ' + hop.rtt : ''}`;
+  
+            this.topology.nodes.push({
+              id: nodeId,
+              label,
+              ip: hop.ip,
+              hostname: hop.hostname
+            });
+            const prev = hop.hop === 1 ? 'source' : `hop${hop.hop - 1}`;
+            this.topology.links.push({ source: prev, target: nodeId });
+          }
         }
-      });
+      }
     });
   
     this.activeProcess.on('close', () => {
       if (!this.topology.nodes.find(n => n.id === 'dest')) {
-        this.topology.nodes.push({ id: 'dest', label: target });
+        this.topology.nodes.push({
+          id: 'dest',
+          label: target,
+          ip: target,
+          hostname: target
+        });
         const last = this.topology.nodes[this.topology.nodes.length - 2].id;
         this.topology.links.push({ source: last, target: 'dest' });
         this._panel.webview.postMessage({ command: 'updateTopology', topology: this.topology });
@@ -246,17 +291,45 @@ export class TraceroutePanel {
     this.activeProcess = undefined;
   }
 
-  private parseTracerouteLine(line: string): TracerouteHop | null {
-    if (line.includes('*')) {
-      const m = line.match(/^\s*(\d+)/);
-      return m ? { hop: +m[1], ip: 'timeout', hostname: 'timeout' } : null;
+  private parseTracerouteLine (line: string): TracerouteHop | null {
+    line = line.trim();
+    if (
+         line.startsWith('Tracing route to') ||
+         line.startsWith('over a maximum')   ||
+         line === 'Trace complete.'
+       ) {
+      return null;
     }
-    const linuxRe = /^\s*(\d+)\s+(\S+)\s+\(([\d.]+)\)\s+([\d.]+)\s*ms/;
-    const m = line.match(linuxRe);
-    return m
-      ? { hop: +m[1], hostname: m[2], ip: m[3], rtt: `${m[4]} ms` }
-      : null;
-  }
+  
+    if (/^\d+\s+\*\s+\*\s+\*/.test(line)) {
+      const hop = Number(line.split(/\s+/)[0]);
+      return { hop, ip: 'timeout', hostname: 'timeout' };
+    }
+  
+    // Linux
+    const unixRe = /^\s*(\d+)\s+(\S+)\s+\(([\d.]+)\)\s+([\d.]+)\s*ms/;
+    const mU = unixRe.exec(line);
+    if (mU) {
+      return {
+        hop:      +mU[1],
+        hostname: mU[2],
+        ip:       mU[3],
+        rtt:      `${mU[4]} ms`
+      };
+    }
+  
+    // Windows tracert adapt
+    const winRe = /^\s*(\d+)\s+(<\d+|\d+|\*)\s*ms\s+(<\d+|\d+|\*)\s*ms\s+(<\d+|\d+|\*)\s*ms\s+(.+?)(?:\s+\[([\d.]+)\])?\s*$/;
+    const mW = winRe.exec(line.replace(/\s+/g, ' '));
+    if (mW) {
+      const [ , hopStr, t1, t2, t3, hostPart, ipBracket ] = mW;
+      const rtt = `${t1} ms ${t2} ms ${t3} ms`.replace(/\* ms/g, '*');
+      const ip  = ipBracket ?? hostPart.trim();
+      const hostname = ipBracket ? hostPart.trim() : ip;
+      return { hop: +hopStr, hostname, ip, rtt };
+    }
+    return null;
+  }  
 
   private generateCSV(): string {
     let csv = 'NodeID,Label\n';
