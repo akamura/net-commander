@@ -1,0 +1,50 @@
+#############################################
+# Let's keep everything clean before commit #
+#############################################
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Roadmap and other stuffs
+ROADMAP.md
+
+# VS Code settings and sensitive info
+.vscode**
+vsc-extension-quickstart.md
+tsconfig.json
+package-lock.json
+
+# Sensitive environment/config files
+.env.*
+
+# Compiled output
+out/
+dist/
+
+# Logs or debug files
+*.log
+
+# Eventual annoying OS-specific files
+.DS_Store
+Thumbs.db
+
+# Secrets and API Keys
+secrets.json
+secret.*
+credentials.*
+config.js
+config.json
+*.pem
+*.key
+
+# NPM sensitive files
+npmrc
+.npmrc
+
+# VS Code Extension-specific
+*.vsix
+coverage/
+test-results/
+tmp/
+/net-commander

@@ -1,0 +1,98 @@
+/***************************************************************************
+ *   Extension:   Net Commander                                            *
+ *   Version:     0.0.1                                                    *
+ *   Author:      elelabdev                                                *
+ *   Description: Net Commander is the extension for Visual Studio Code    *
+ *                dedicated to Network Engineers, DevOps Engineers and     *
+ *                Solution Architects streamlining everyday workflows and  * 
+ *                accelerating data-driven root-cause analysis.            *
+ *                                                                         *
+ *   Github:      https://github.com/elelabdev/net-commander               *
+ *                                                                         *
+ *   Icon Author: elelab                                                   *
+ *                                                                         *
+ *   Copyright (C) 2025 elelab                                             *
+ *   https://www.elelab.dev                                                *
+ *                                                                         *
+ *   Licensed under the MIT License. See LICENSE file in the project       *
+ *   root for details.                                                     *
+ **************************************************************************/
+
+/*  media/module-cidrcalculator/style.css */
+
+th {
+    text-align: left;
+}
+
+vscode-textarea {
+    width: 100%;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.header {
+display: flex;
+gap: 1rem;
+padding: 1rem;
+}
+
+.middle {
+  grid-row: 3;
+  padding: 1rem;
+  overflow: auto;
+}
+
+.footer {
+  grid-row: 4;
+  padding: 1rem;
+  border-top: 1px solid var(--vscode-editorWidget-border);
+}
+
+.calc-entry {
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed var(--vscode-editorWidget-border);
+  padding-bottom: 3.5rem;
+}
+
+button,
+vscode-button {
+  margin-right: 0.5rem;
+}
+
+.bottom-grid {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.result-panel, .history-panel {
+  flex: 1;
+  padding: 1rem;
+  border: 1px solid var(--vscode-editorWidget-border);
+  border-radius: 4px;
+  background-color: var(--vscode-editorWidget-background);
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.result-panel {
+  flex-basis: 50%;
+}
+
+.history-panel {
+  flex-basis: 50%;
+}
+
+vscode-badge {
+  background-color: #a5148e;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+vscode-label#vscode-label-1,
+vscode-label#vscode-label-2,
+vscode-label#vscode-label-3,
+vscode-label#vscode-label-4,
+vscode-label#vscode-label-5 {
+    margin-top: 10px;
+}

@@ -1,0 +1,181 @@
+{
+  "name": "net-commander",
+  "displayName": "Net Commander ",
+  "description": "Net Commander is the extension for Visual Studio Code dedicated to Network Engineers, DevOps Engineers and Solution Architects streamlining everyday workflows and accelerating data-driven root-cause analysis.",
+  "version": "0.0.1",
+  "extensionKind": [
+    "workspace",
+    "ui"
+  ],
+  "publisher": "elelabdev",
+  "pricing": "Free",
+  "category": "Formatters, Others",
+  "icon": "media/img/icons/net-commander-icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elelabdev/net-commander"
+  },
+  "bugs": {
+    "url": "https://github.com/elelabdev/net-commander/issues"
+  },
+  "sponsor": {
+    "url": "https://github.com/sponsors/elelabdev"
+  },
+  "engines": {
+    "vscode": "^1.99.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "networking",
+    "ipinfo",
+    "ip",
+    "rfc",
+    "ssh",
+    "terminal",
+    "iana",
+    "peeringdb",
+    "traceroute",
+    "ping",
+    "colorizer"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:sshConnect.connect",
+    "onTerminalProfile:sshConnect.profile",
+    "onLanguage:plaintext",
+    "onCommand:netcmd.copyLastOutput",
+    "onCommand:netcmd.saveLastOutput"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sshConnect.connect",
+        "title": "NET Commander: SSH Connect"
+      },
+      {
+        "command": "net-commander.cidrcalc",
+        "title": "NET Commander: CIDR Calculator"
+      },
+      {
+        "command": "net-commander.checkIpInfo",
+        "title": "NET Commander: Public IP lookup - ipinfo.io"
+      },
+      {
+        "command": "net-commander.checkMyIpInfo",
+        "title": "NET Commander: Get my Public IP - ipinfo.io"
+      },
+      {
+        "command": "net-commander.ping",
+        "title": "NET Commander: Ping"
+      },
+      {
+        "command": "net-commander.traceroute",
+        "title": "NET Commander: Traceroute"
+      },
+      {
+        "command": "net-commander.ianaportcalc",
+        "title": "NET Commander: IANA Port Calculator"
+      },
+      {
+        "command": "net-commander.peeringdb",
+        "title": "NET Commander: PeeringDB Lookup"
+      },
+      {
+        "command": "net-commander.wifiAnalyzer",
+        "title": "NET Commander: WiFi Analyzer"
+      },
+      {
+        "command": "net-commander.rootcauseAnalysis",
+        "title": "NET Commander: Root Cause Analysis"
+      },
+      {
+        "command": "netcmd.copyLastOutput",
+        "title": "Copy Output",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "netcmd.saveLastOutput",
+        "title": "Download Output",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "net-commander.selectWindowsAdapter",
+        "title": "NET Commander: Select Windows Network Adapter"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "netcmd.copyLastOutput",
+          "when": "view == terminal",
+          "group": "navigation"
+        },
+        {
+          "command": "netcmd.saveLastOutput",
+          "when": "view == terminal",
+          "group": "navigation"
+        }
+      ]
+    },
+    "terminal": {
+      "profiles": [
+        {
+          "id": "sshConnect.profile",
+          "title": "SSH: Select Host",
+          "icon": "remote"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "NET Commander",
+      "properties": {
+        "netCommander.ipinfoApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Open a Free account at ipinfo.io website and get your free API key from your dashboard API Token and paste it here."
+        },
+        "netCommander.ianaCsvUrl": {
+          "type": "string",
+          "default": "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.csv",
+          "description": "This is the precompiled URL for IANA port assignments. Verify the URL at the IANA site and replace here if they update it https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml"
+        },
+        "netCommander.windowsAdapterName": {
+          "type": "string",
+          "default": "",
+          "description": "Selected Windows network adapter for traffic monitoring (RX/TX)",
+          "markdownDescription": "Run the command 'NET Commander: Select Windows Network Adapter' to populate this.",
+          "scope": "machine"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.17.47",
+    "@types/vscode": "^1.99.0",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.23.0",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@vscode-elements/elements": "^1.15.0",
+    "lit": "3.3.0",
+    "markdown-it": "^14.1.0",
+    "puppeteer": "^22.15.0",
+    "ssh-config": "^5.0.3"
+  }
+}

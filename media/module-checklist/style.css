@@ -1,0 +1,45 @@
+/***************************************************************************
+ *   Extension:   Net Commander                                            *
+ *   Version:     0.0.1                                                    *
+ *   Author:      elelabdev                                                *
+ *   Description: Net Commander is the extension for Visual Studio Code    *
+ *                dedicated to Network Engineers, DevOps Engineers and     *
+ *                Solution Architects streamlining everyday workflows and  * 
+ *                accelerating data-driven root-cause analysis.            *
+ *                                                                         *
+ *   Github:      https://github.com/elelabdev/net-commander               *
+ *                                                                         *
+ *   Icon Author: elelab                                                   *
+ *                                                                         *
+ *   Copyright (C) 2025 elelab                                             *
+ *   https://www.elelab.dev                                                *
+ *                                                                         *
+ *   Licensed under the MIT License. See LICENSE file in the project       *
+ *   root for details.                                                     *
+ **************************************************************************/
+
+/*  media/module-checklist/style.css */
+
+vscode-form-container:has(vscode-single-select#scenarioSelect[disabled]) 
+  > vscode-label[for="scenarioSelect"],
+vscode-single-select#scenarioSelect[disabled] {
+  display: none !important;
+}
+
+h3 {
+    margin-top: 35px;
+}
+
+vscode-form-container {
+    display: block;
+    max-width:100%;
+}
+
+vscode-table#preTable,
+vscode-table#mainTable {
+    margin: 20px 0 10px 0;
+}
+
+vscode-table-cell {
+    white-space: normal;
+}

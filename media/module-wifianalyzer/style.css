@@ -1,0 +1,150 @@
+/***************************************************************************
+ *   Extension:   Net Commander                                            *
+ *   Version:     0.0.1                                                    *
+ *   Author:      elelabdev                                                *
+ *   Description: Net Commander is the extension for Visual Studio Code    *
+ *                dedicated to Network Engineers, DevOps Engineers and     *
+ *                Solution Architects streamlining everyday workflows and  * 
+ *                accelerating data-driven root-cause analysis.            *
+ *                                                                         *
+ *   Github:      https://github.com/elelabdev/net-commander               *
+ *                                                                         *
+ *   Icon Author: elelab                                                   *
+ *                                                                         *
+ *   Copyright (C) 2025 elelab                                             *
+ *   https://www.elelab.dev                                                *
+ *                                                                         *
+ *   Licensed under the MIT License. See LICENSE file in the project       *
+ *   root for details.                                                     *
+ **************************************************************************/
+
+/*  media/module-wifianalyzer/style.css */
+
+.top-bar .controls {
+    display: flex;
+    gap: .5rem;
+}
+
+.top-bar vscode-button {
+}
+
+.header, .footer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.middle {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0.5rem;
+    padding: 0.5rem;
+} 
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .25rem .5rem;
+    background: var(--header-bg);
+    color: var(--accent-fg);
+}
+
+.static-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    font-size: 0.8rem;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.panel.chart {
+    height: 400px !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel.chart > svg {
+    flex: 1 1 auto;
+    width: 100%;
+    height: auto;
+}
+
+.panel.chart > svg {
+    height: calc(100% - var(--chart-header-height, 0px));
+}
+
+.info-block {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--vscode-editorWidget-border);
+    background: var(--vscode-editor-background);
+}
+
+.info-block > h2 {
+    margin: 0;
+    padding: .25rem .5rem;
+    background: var(--vscode-sideBar-background);
+    color: var(--vscode-button-foreground);
+    font-size: .9rem;
+    text-align: center;
+    flex: 0 0 auto;
+}
+
+.info-block .info-scrollable {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 0.5rem;
+}
+
+.info-block .info-scrollable > vscode-table {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .5rem;
+    padding: 1rem;
+    background: var(--vscode-editor-background);
+}
+
+.footer .section {
+    border: 1px solid var(--vscode-editorWidget-border);
+    background: var(--vscode-editor-background);
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+}
+
+.footer .section > h2 {
+    margin: 0;
+    padding: .25rem .5rem;
+    background: var(--vscode-sideBar-background);
+    color: var(--vscode-sideBar-foreground);
+    font-size: .9rem;
+    text-align: center;
+    flex: 0 0 auto;
+}
+
+.footer .section > svg {
+    flex: 1 1 auto;
+    width: 100%;
+}
