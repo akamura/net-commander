@@ -4,10 +4,10 @@ All notable changes to the "net-commander" extension will be documented in this 
 
 <br><br>
 
-## 2025-05-05 - [0.0.1]
+## 2025-05-16 - [0.0.2]
 ### Added
-- Initial release
+- Minor fixes for Windows Tracert Command
 
-## 2025-05-05 - [0.0.1]
+## 2025-05-16 - [0.0.1]
 ### Added
 - Initial release
