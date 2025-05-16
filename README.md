@@ -94,7 +94,7 @@ The CIDR Calculator provide you also the capability of running **What-if-simulat
 <br><br>
 
 ## Public IP Lookup (ipinfo.io)
-![Public IP Lookup](https://github.com/elelabdev/net-commander/blob/main/resources/readme/public-ip-info.png)  
+![Public IP Lookup](https://raw.githubusercontent.com/elelabdev/net-commander/refs/heads/main/media/img/readme/public-ip-info.png)  
 Retrieve your external IP or gather details about any IP address with ipinfo.io integration. Instantly fetch geolocation, ASN, hostname, and ISP info without leaving the editor. For higher rate limits or more data, add your ipinfo API token in Settings → Net Commander → Ipinfo API Key.
 
 <br><br>
@@ -127,12 +127,6 @@ Automatically apply syntax highlighting to Cisco‑style `.txt` files. Keywords,
 ![Config Colorizer](https://raw.githubusercontent.com/elelabdev/net-commander/refs/heads/main/media/img/readme/net-colorizer-iptooltips.png)  
 Plus the extension will automatically detect private and public IPs placing tooltips above them for your better understanding. In case of Public IPs provide you access to **ipinfo.io database** to get accurate informations without leaving the configuration you are exploring avoiding spam ads or distractions.
 <br>
-> 💡 Setup guide
-> 1. Run the command for the first time **Net Commander topology viewer** it will generate a folder in your workspace root named **net-commander/topology-viewer**.
->
-> 2. Place inside **topology-viewer** subfolder all your **show-cdp-neghbors-detail.txt* files you can organize them by subfolders if you have many.
->
-> 3. Close and run again the **Net Commander topology viewer** it will generate the topology reading your files.
 
 <br><br>
 
@@ -143,10 +137,16 @@ Plus the extension will automatically detect private and public IPs placing tool
 ## 😎 Quick Start
 
 1. **Install** Net Commander from the VS Code Marketplace.  
-2. Open the **Command Palette** with <kbd>Ctrl + Shift + P</kbd> (Windows/Linux) or <kbd>⇧⌘P</kbd> (macOS).  
-3. Type `Net Commander:` to see all commands and select the tool you need.  
-4. Enjoy seamless network operations without leaving your editor!
-
+2. Setup IPinfo account (you need it to query public IP info DB)
+3. Open the **Command Palette** with <kbd>Ctrl + Shift + P</kbd> (Windows/Linux) or <kbd>⇧⌘P</kbd> (macOS).  
+4. Type `Net Commander:` to see all commands and select the tool you need.  
+5. Enjoy seamless network operations without leaving your editor!
+> 💡 Setup guide of IPinfo
+> 1. Signup for a free account at https://ipinfo.io/signup.
+>
+> 2. Once signed up from your dashboard open the **API Token** page and copy your token https://ipinfo.io/dashboard/token.
+>
+> 3. Open VS Code Settings panel search for **Net Commander** and paste your Token in the Net Commander IPinfo form.
 
 <br><br>
 
