@@ -5,8 +5,12 @@
 # Network Engineering Toolkit for Visual Studio Code
 **Manage and diagnose networks end-to-end without ever leaving your code editor. Conduct real Root Cause Analysis data-driven with no more guessing**
 
+
+![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/elelabdev.net-commander)
 [![Uses VSCode Elements](https://img.shields.io/badge/uses-vscode--elements-blue)](https://github.com/vscode-elements/elements/network/dependents)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+
 
 </div>
 <br><br>

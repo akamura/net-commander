@@ -2,7 +2,7 @@
   "name": "net-commander",
   "displayName": "Net Commander ",
   "description": "Net Commander is the extension for Visual Studio Code dedicated to Network Engineers, DevOps Engineers and Solution Architects streamlining everyday workflows and accelerating data-driven root-cause analysis.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "extensionKind": [
     "workspace",
     "ui"
@@ -29,11 +29,16 @@
   ],
   "keywords": [
     "networking",
+    "wifi analyzer",
+    "wifi site survey",
+    "root cause analysis",
     "ipinfo",
-    "ip",
-    "rfc",
+    "cidr calculator",
     "ssh",
     "terminal",
+    "cisco",
+    "arista",
+    "ciena",
     "iana",
     "peeringdb",
     "traceroute",
