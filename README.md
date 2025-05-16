@@ -7,6 +7,7 @@
 
 
 ![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/elelabdev.net-commander)
+![Open VSX Version](https://img.shields.io/open-vsx/v/elelabdev/net-commander)
 [![Uses VSCode Elements](https://img.shields.io/badge/uses-vscode--elements-blue)](https://github.com/vscode-elements/elements/network/dependents)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
