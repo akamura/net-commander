@@ -246,7 +246,7 @@ export const specialisedAzure: Record<AzureScenario, Section[]> = {
         {
           id:   'az_route_table_diff',
           label:'Compare UDR vs system routes (effective route table)',
-          cmd:  'az network watcher route-table list-effective --vm <vm> --resource-group <rg> --output table'
+          cmd:  'az network watcher route-table list-effective --vm <vm> --resource-group RGName --output table'
         },
         {
           id:   'az_service_tags',
@@ -261,7 +261,7 @@ export const specialisedAzure: Record<AzureScenario, Section[]> = {
         {
           id:   'az_vhub_routes',
           label:'Dump vWAN Hub effective routes',
-          cmd:  'az network vhub get-effective-routes --name <hub> --resource-group <rg> --output table'
+          cmd:  'az network vhub get-effective-routes --name <hub> --resource-group RGName --output table'
         }
       ]
     },
@@ -286,7 +286,7 @@ export const specialisedAzure: Record<AzureScenario, Section[]> = {
         {
           id:   'az_ddos_status',
           label:'Query DDoS Rapid Response status',
-          cmd:  'az network ddos-protection show --name <plan> --resource-group <rg>'
+          cmd:  'az network ddos-protection show --name <plan> --resource-group RGName'
         }
       ]
     }
@@ -973,100 +973,96 @@ export const checklist: Record<Platform, Section[]> = {
   // END Ciena SAOS - advanced checklist
 
   // BEGIN Microsoft Azure – advanced (network‑centric)
-  azure: [
+    azure: [
     {
       title: 'Subscription & Service Health',
       items: [
-        { id: 'az_health',     label: 'Current Azure-wide service issues',        cmd: 'az service-health show --query issues --output table' },
-        { id: 'az_res_health', label: 'Resource Health – VNets / NICs / LBs',     cmd: 'az resource-health list-by-resource --resource-type Microsoft.Network' },
-        { id: 'az_activity',   label: 'Activity-log failures (last 200)',         cmd: 'az monitor activity-log list --status Failed --max-events 200' },
-        { id: 'az_change',     label: 'Change-analysis diff – network resources', cmd: 'az resource-graph query --query "Resources | where type =~ \'Microsoft.Network\'"' }
+        { id: 'az_health_sub',          label: 'Verify your current subscription',                                            cmd: 'az account show --output table' },
+        { id: 'az_health_list_sub',     label: 'List Tenant wide subscriptions',                                              cmd: 'az account list --output table' },
+        { id: 'az_health_set_sub',      label: 'Set the desired subscription',                                                cmd: 'az account set --subscription SubID-OR-Name' },
+        { id: 'az_health_list_rg',      label: 'List Resource Groups',                                                        cmd: 'az group list --output table' },
+        { id: 'az_health_list_res',     label: 'List all Resources in RG',                                                    cmd: 'az resource list -g RGName --output table' },
+        { id: 'az_health_list_vms',     label: 'List all VM in RG',                                                           cmd: 'az vm list -g RGName --show-details --output table' },
+        { id: 'az_health_list_pri',     label: 'List all VM in RG including Private IPs',                                     cmd: 'az vm list -g RGName --show-details --query "[].{Name:name, PrivateIP:privateIps, PublicIP:publicIps, PowerState:powerState}" --output table' },
+        { id: 'az_health_pcap',         label: 'Execute packet capture',                                                      cmd: 'az network watcher packet-capture create --name myCapture --resource-group RGName --vm VMName --storage-account StorageAccountName --file-path captures/myCapture.pcap' },
+        { id: 'az_health',              label: 'Current Azure-wide service issues',                                           cmd: 'az graph query -q "ServiceHealthResources | project id, properties" --output table' },
+        { id: 'az_activity',            label: 'Lists the 200 most recent failed operations from Azure Activity Logs.',       cmd: 'az monitor activity-log list --status Failed --max-events 200 --output table' }
       ]
     },
     {
       title: 'Connectivity Diagnostics (Network Watcher)',
       items: [
-        { id: 'az_conn_tr',    label: 'Single-hop connectivity test',             cmd: 'az network watcher test-connectivity --source-resource <vm> --dest-address <ip> --dest-port 443' },
-        { id: 'az_conn_check', label: 'Multi-hop connectivity path',              cmd: 'az network watcher test-connectivity --source-resource <vmA> --dest-resource <vmB>' },
-        { id: 'az_topology',   label: 'Topology map (JSON)',                      cmd: 'az network watcher show-topology --location <region>' }
+        { id: 'az_conn_tr',             label: 'Single-hop connectivity test',                                                cmd: 'az network watcher test-connectivity --source-resource VMName --resource-group RGName --dest-address 1.1.1.1 --dest-port 443' },
+        { id: 'az_conn_check',          label: 'Multi-hop connectivity path',                                                 cmd: 'az network watcher test-connectivity --source-resource VMName --dest-resource VMName' },
+        { id: 'az_health_gen_rg',       label: 'Generate Resource Groups topology',                                           cmd: 'az network watcher show-topology -g RGName --output json > RGName-topology.json' }
       ]
     },
     {
       title: 'Effective Policy Evaluation',
       items: [
-        { id: 'az_effective_nsg',   label: 'Effective NSG – NIC & subnet',        cmd: 'az network nic show-effective-nsg --ids <nicId>' },
-        { id: 'az_effective_route', label: 'Effective route table',               cmd: 'az network nic show-effective-route-table --ids <nicId>' }
+        { id: 'az_effective_nsg',       label: 'List all VM NICs',                                                            cmd: 'az vm nic list --resource-group RGName --vm-name VMName --query "[].id" -o tsv' },
+        { id: 'az_effective_nsg',       label: 'Shows the effective Network Security Groups (NSGs) applied to a network interface specified by its resource ID.',        cmd: 'az network nic list-effective-nsg --ids VM-NIC-ID --query "effectiveNetworkSecurityGroups[].name" --output json > VM-NIC-ID_VMName.json' },
+        { id: 'az_effective_route',     label: 'Shows effective route table of the VM NIC',                                   cmd: 'az network nic show-effective-route-table --ids VM-NIC-ID --output table' }
       ]
     },
     {
       title: 'Packet & Flow Inspection',
       items: [
-        { id: 'az_pcap_start', label: 'Start packet capture (5 min)',      cmd: 'az network watcher packet-capture create --vm <vmId> --file-path /capt/cap1 --time-limit 300' },
-        { id: 'az_pcap_dl',    label: 'Download packet capture file',      cmd: 'az network watcher packet-capture show --resource-group <rg> --vm <vmId> --name cap1 --query storageLocation.filePath' },
-        { id: 'az_flow',       label: 'Enable NSG flow-logs + analytics',  cmd: 'az network watcher flow-log configure --nsg <nsgId> --enabled true --traffic-analytics' }
+        { id: 'az_pcap_start',          label: 'Start packet capture (5 min)',                                                cmd: 'az network watcher packet-capture create --vm VM-ID --file-path /capt/cap1 --time-limit 300' },
+        { id: 'az_pcap_dl',             label: 'Download packet capture file',                                                cmd: 'az network watcher packet-capture show --resource-group RGName --vm VM-ID --name cap1 --query storageLocation.filePath' },
+        { id: 'az_flow',                label: 'Enable NSG flow-logs + analytics',                                            cmd: 'az network watcher flow-log configure --nsg nsgId --enabled true --traffic-analytics' },
+        { id: 'az_ipflow',              label: 'IP Flow Verify',                                                              cmd: 'az network watcher test-ip-flow --local srcIP --remote dstIP --port 443 --protocol TCP' },
+        { id: 'az_next_hop',            label: 'Next-hop lookup',                                                             cmd: 'az network watcher show-next-hop --source-ip srcIP --dest-ip dstIP' },
+        { id: 'az_nsg_watch',           label: 'Real-time NSG hit counters',                                                  cmd: 'watch -n1 az network watcher nsg-flow-log show --location region --nsg-name nsg' },
+        { id: 'az_conn_monitor',        label: 'Connection Monitor list',                                                     cmd: 'az network watcher connection-monitor list --location region' },
+        { id: 'az_vm_netstat',          label: 'In-guest netstat via Run Command',                                            cmd: 'az vm run-command invoke --command-id RunShellScript --scripts "ss -ant" --ids VM-ID' }
       ]
     },
     {
       title: 'NIC-level Telemetry',
       items: [
-        { id: 'az_nic_metrics', label: 'NIC packet counters (Monitor)',         cmd: 'az monitor metrics list --resource <nicId> --metric "NetworkPacketsIn,NetworkPacketsOut"' },
-        { id: 'az_accel_net',   label: 'SR-IOV / accelerated-networking stats', cmd: 'az vm nic-show-detail --ids <nicId> --query "srIovStats"' }
+        { id: 'az_nic_metrics',         label: 'NIC packet counters (Monitor)',                                               cmd: 'az monitor metrics list --resource VM-NIC-ID --metric "PacketsReceivedRate,PacketsSentRate" --output table' },
+        { id: 'az_accel_net_check',     label: 'Check if the VM size supports SR-IOV',                                        cmd: 'az network nic show --ids VM-NIC-ID --query "enableAcceleratedNetworking"' },
+        { id: 'az_accel_net',           label: 'SR-IOV / accelerated-networking stats',                                       cmd: 'az network nic show --ids VM-NIC-ID --query "srIovStats"' }
       ]
     },
     {
-      title: 'Load Balancer',
+      title: 'Load Balancers',
       items: [
-        { id: 'az_lb_backend', label: 'LB backend health',     cmd: 'az network lb show-backend-health --lb-name <lb> --resource-group <rg>' },
-        { id: 'az_lb_probe',   label: 'LB probe status',       cmd: 'az network lb probe show --lb-name <lb> --name <probe> --resource-group <rg>' },
-        { id: 'az_lb_snat',    label: 'SNAT port utilisation', cmd: 'az monitor metrics list --resource <lbId> --metric SnatConnectionCount' }
+        { id: 'az_lb_backend_list',     label: 'List Load Balancers',                                                         cmd: 'az network lb list --resource-group RGName --output table' },
+        { id: 'az_lb_probe',            label: 'Check Load Balancer Health Probes',                                           cmd: 'az network lb probe list --resource-group RGName --lb-name LB-Name --output table' },
+        { id: 'az_lb_bck_pool',         label: 'Check and list the backend address pools',                                    cmd: 'az network lb address-pool list --resource-group RGName --lb-name LB-Name --output table' }
       ]
     },
     {
       title: 'App Gateway / WAF',
       items: [
-        { id: 'az_appgw_health', label: 'App Gateway backend health', cmd: 'az network application-gateway show-backend-health --name <agw> --resource-group <rg>' },
-        { id: 'az_appgw_waf',    label: 'WAF log query (KQL)',        cmd: '"AzureDiagnostics | where ResourceType==\'APPLICATIONGATEWAYFIREWALL\'"' }
-      ]
-    },
-    {
-      title: 'Azure Firewall',
-      items: [
-        { id: 'az_afw_logs', label: 'Firewall rule hits (KQL)', cmd: '"AzureDiagnostics | where Category==\'AzureFirewallNetworkRule\'"' }
+        { id: 'az_appgw_list',          label: 'List Application Gateways',                                                   cmd: 'az network application-gateway list --resource-group RGName --output table' },
+        { id: 'az_appgw_health',        label: 'Check App Gateway backend health',                                            cmd: 'az network application-gateway show-backend-health --name AGW-name --resource-group RGName --output table' },
+        { id: 'az_appgw_httpsliste',    label: 'List HTTP(S) Listeners',                                                      cmd: 'az network application-gateway show-backend-health --name AGW-name --resource-group RGName --output table' },
+        { id: 'az_appgw_use',           label: 'Which VMs use the Application Gateway',                                       cmd: 'az network application-gateway show --name appgw-name --resource-group RGName --query "backendAddressPools" --output table' },
+        { id: 'az_appgw_httpsbkliste',  label: 'List Backend HTTP Settings',                                                  cmd: 'az network application-gateway http-settings list --gateway-name appgw-name --resource-group RGName --output table' },
+        { id: 'az_appgw_routerules',    label: 'List Request Routing Rules',                                                  cmd: 'az network application-gateway rule list --gateway-name appgw-name --resource-group RGName --output table' },
       ]
     },
     {
       title: 'Routing & Hybrid connectivity',
       items: [
-        { id: 'az_ars_bgp',      label: 'Route Server BGP peer status',         cmd: 'az network route-server peering list --resource-group <rg> --name <rs>' },
-        { id: 'az_er_vpn',       label: 'VPN / ExpressRoute IPSec stats',       cmd: 'az network vpn-connection list-ipsec-ike-stats --name <conn> --resource-group <rg>' },
-        { id: 'az_vwan',         label: 'Virtual WAN connection health',        cmd: 'az network vwan list-connections --vwan-name <vw> --resource-group <rg>' },
-        { id: 'az_vnet_peering', label: 'VNet-peering flags & state',           cmd: 'az network vnet peering show --vnet-name <vnet> --name <peer> --resource-group <rg>' }
+        { id: 'az_list_vpn',            label: 'List VPN Connections in a Resource Group',                                    cmd: 'az network vpn-connection list --resource-group RGName --output table' },
+        { id: 'az_er_vpn',              label: 'VPN / ExpressRoute IPSec stats',                                              cmd: 'az network vpn-connection list-ipsec-ike-stats --name conn --resource-group RGName' },
+        { id: 'az_vwan_list',           label: 'List Virtual WAN',                                                            cmd: 'az network vwan list --output table' },
+        { id: 'az_vwan',                label: 'Virtual WAN connection health',                                               cmd: 'az network vwan list-connections --vwan-name vw --resource-group RGName' },
+        { id: 'az_vnet_peering',        label: 'VNet-peering flags & state',                                                  cmd: 'az network vnet peering show --vnet-name vnet --name peer --resource-group RGName' }
       ]
     },
     {
       title: 'Private Link / DNS',
       items: [
-        { id: 'az_priv_dns', label: 'Private DNS zone-to-VNet links',             cmd: 'az network private-dns link vnet list --zone-name <zone> --resource-group <rg>' },
-        { id: 'az_dns',      label: 'Internal DNS resolve test (168.63.129.16)',  cmd: 'dig @168.63.129.16 <fqdn>' }
+        { id: 'list_az_priv_dns',       label: 'List all Private DNS zones in a resource group',                              cmd: 'az network private-dns zone list --resource-group RGName --output table' },
+        { id: 'az_priv_dns',            label: 'List Private DNS zone-to-VNet links',                                         cmd: 'az network private-dns link vnet list --zone-name zone --resource-group RGName --output table' },
+        { id: 'az_dns',                 label: 'Internal DNS resolve test (168.63.129.16)',                                   cmd: 'dig @168.63.129.16 <fqdn>' }
       ]
     },
-    {
-      title: 'Security & Protection',
-      items: [
-        { id: 'az_ddos',           label: 'DDoS plan Under-Attack metric', cmd: 'az monitor metrics list --resource <planId> --metric UnderDDoSAttack' },
-        { id: 'az_monitor_alerts', label: 'NSG counter alert query (KQL)', cmd: '"AzureNetworkAnalytics_CL | summarize count()"' }
-      ]
-    },
-    {
-      title: 'Cloud Shell / advanced helpers',
-      items: [
-        { id: 'az_ipflow',       label: 'IP Flow Verify',                   cmd: 'az network watcher test-ip-flow --local <srcIP> --remote <dstIP> --port 443 --protocol TCP' },
-        { id: 'az_next_hop',     label: 'Next-hop lookup',                  cmd: 'az network watcher show-next-hop --source-ip <srcIP> --dest-ip <dstIP>' },
-        { id: 'az_nsg_watch',    label: 'Real-time NSG hit counters',       cmd: 'watch -n1 az network watcher nsg-flow-log show --location <region> --nsg-name <nsg>' },
-        { id: 'az_conn_monitor', label: 'Connection Monitor list',          cmd: 'az network watcher connection-monitor list --location <region>' },
-        { id: 'az_vm_netstat',   label: 'In-guest netstat via Run Command', cmd: 'az vm run-command invoke --command-id RunShellScript --scripts "ss -ant" --ids <vmId>' }
-      ]
-    }
   ],
   // END Microsoft Azure – advanced (network‑centric)
 
